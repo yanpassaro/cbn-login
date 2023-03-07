@@ -8,7 +8,6 @@ Essa API é baseada em príncipios de microservices, sendo capaz de se comunicar
 - [x] Login
 - [x] Registro
 - [ ] Autenticação de token
-- [ ] Verificação via email
 
 # Como usar
 
