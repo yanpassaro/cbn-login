@@ -1,7 +1,7 @@
 # CBN LOGIN API
 
 #### Gerenciamento do fluxo de contas dos usuários e responsavel também pelos ciclos de vida dos tokens.
-Essa API é baseada em príncipios de microservices, sendo capaz de se comunicar com diversos outros serviços via RabbitMQ.
+Essa API é baseada em príncipios de microservices.
 
 ### Features
 
