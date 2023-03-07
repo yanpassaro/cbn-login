@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Size;
 
 import java.io.Serializable;
 
-public record LoginDTO(
+public record Login(
         @Email
         String email,
         @NotNull @Size(min = 8, max = 30)

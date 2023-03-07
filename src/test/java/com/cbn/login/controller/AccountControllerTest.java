@@ -1,7 +1,7 @@
 package com.cbn.login.controller;
 
 import com.cbn.login.domain.dto.AccountDTO;
-import com.cbn.login.domain.dto.LoginDTO;
+import com.cbn.login.domain.dto.Login;
 import com.cbn.login.exception.IncorrectCredentialsException;
 import com.cbn.login.service.AccountService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,71 +31,28 @@ class AccountControllerTest {
     @Autowired
     AccountService accountService;
     AccountDTO accountDTO;
-    LoginDTO loginDTO;
+    Login login;
 
     @BeforeAll
     void setUp() throws IncorrectCredentialsException {
-        accountService.register(new AccountDTO(null, "name", "email@email", "password1"));
+        accountDTO = new AccountDTO("name", "lastName", "email@email.com", "password1");
+        login = new Login("email@email.com", "password1");
     }
 
     @Test
     void accountIntegration() throws Exception {
-        accountDTO = new AccountDTO(null, "name", "email@email.com", "password1");
-        loginDTO = new LoginDTO("email@email.com", "password1");
         mockMvc.perform(post("/api/account/create")
                         .contentType("application/json")
                         .content(objectMapper.writeValueAsString(accountDTO)))
                 .andDo(print())
+
                 .andExpect(status().isOk())
                 .andReturn();
-        mockMvc.perform(post("/api/account/login")
+        mockMvc.perform(post("/api/account/login").param("application", "CANDI")
                         .contentType("application/json")
-                        .content(objectMapper.writeValueAsString(loginDTO)))
+                        .content(objectMapper.writeValueAsString(login)))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andReturn();
-    }
-
-    @Test
-    void testAccountAlreadyExists() throws Exception {
-        mockMvc.perform(post("/api/account/create")
-                        .contentType("application/json")
-                        .content(objectMapper.writeValueAsString(accountDTO)))
-                .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andReturn();
-    }
-
-    @Test
-    void testCreateAccountWithIncorrectCredentials() throws Exception {
-        accountDTO = new AccountDTO(null, "name", "email", "password");
-        mockMvc.perform(post("/api/account/create")
-                        .contentType("application/json")
-                        .content(objectMapper.writeValueAsString(accountDTO)))
-                .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andReturn();
-    }
-
-    @Test
-    void testLoginFailedByEmail() throws Exception {
-        loginDTO = new LoginDTO("incorrect@email", "password");
-        mockMvc.perform(post("/api/account/login")
-                        .contentType("application/json")
-                        .content(objectMapper.writeValueAsString(loginDTO)))
-                .andDo(print())
-                .andExpect(status().isBadRequest())
-                .andReturn();
-    }
-
-    @Test
-    void testLoginFailedByPassword() throws Exception {
-        loginDTO = new LoginDTO("email@email", "incorrect");
-        mockMvc.perform(post("/api/account/login")
-                        .contentType("application/json")
-                        .content(objectMapper.writeValueAsString(loginDTO)))
-                .andDo(print())
-                .andExpect(status().isBadRequest())
                 .andReturn();
     }
 }

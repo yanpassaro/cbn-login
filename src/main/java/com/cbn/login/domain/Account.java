@@ -1,13 +1,13 @@
 package com.cbn.login.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -21,12 +21,15 @@ public class Account {
     @GeneratedValue
     private Long id;
     private String name;
+    private String lastName;
     @Column(unique = true)
     private String email;
+    @JsonIgnore
     private String password;
-    private String token;
-    private String expiration;
-    private boolean verified;
+    @OneToMany
+    @JsonIgnore
+    @ToString.Exclude
+    private List<AppAuthorization> appAuthorization;
 
     @Override
     public boolean equals(Object o) {
