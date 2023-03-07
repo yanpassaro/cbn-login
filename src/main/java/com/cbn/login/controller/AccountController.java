@@ -19,7 +19,6 @@ import static org.springframework.http.HttpStatus.OK;
 @RestController
 @RequestMapping("/api/account")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
 public class AccountController {
     private final AccountService accountService;
 
@@ -34,8 +33,8 @@ public class AccountController {
     }
 
     @PostMapping("/login")
-        public ResponseEntity<Response> login(@RequestParam Application application,
-                                              @RequestBody @Valid Login login)
+    public ResponseEntity<Response> login(@RequestParam Application application,
+                                          @RequestBody @Valid Login login)
             throws IncorrectCredentialsException, NotAuthorizedException {
         return ResponseEntity.ok().body(Response.builder()
                 .status(OK).statusCode(OK.value())
